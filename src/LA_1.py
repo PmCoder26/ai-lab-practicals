@@ -1,8 +1,3 @@
-class GraphNode:
-    def __init__(self, data):
-        self.data = data
-
-
 class ListNode:
 
     def __init__(self, data):
