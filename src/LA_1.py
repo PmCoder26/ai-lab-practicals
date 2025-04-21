@@ -66,7 +66,7 @@ class Graph:
 
     def dfs(self, visited, idx):
         visited[idx] = True
-        print(idx, end=", ")
+        print(idx, end=",    ")
         curr = self.list[idx]
         for i in range(0, curr.size):
             v = curr.get(i)
