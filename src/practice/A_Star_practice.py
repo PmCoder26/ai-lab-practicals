@@ -14,50 +14,54 @@ h_values = {
 }
 
 
-def get_neighbours(n):
+def get_neighbors(n):
     return Graph.get(n)
-
 
 def get_h(n):
     return h_values.get(n)
 
 
-def a_star(start_node, stop_node):
-    open_set = set([start_node])
+def a_star(start, end):
+    open_set = set(start)
     closed_set = set()
-    g = {}
     parents = {}
-
-    g[start_node] = 0
-    parents[start_node] = start_node
+    g = {}
+    
+    g[start] = 0
+    parents[start] = start
 
     while len(open_set) > 0:
         n = None
+
+        # getting the node of shortest cost.
         for v in open_set:
-            if (n is None) or (g.get(v) + get_h(v) < g[n] + get_h(n)):
+            if n == None or g.get(v) + get_h(v) < g.get(n) + get_h(n):
                 n = v
 
+        # if n is None that means no path exists.
         if n is None:
-            print("Path doesn't exists.")
-            return None
-
-        if n == stop_node:
+            print("Path doesn't exists!")
+            return n
+        
+        # if n is end node then simple return the path.
+        if n == end:
             path = []
             while parents[n] != n:
                 path.append(n)
                 n = parents[n]
-            path.append(start_node)
+            path.append(start)
             path.reverse()
-            print("The required path is: ", path)
+            print('The required path is:', path)
             return path
-
-        for (m, weight) in get_neighbours(n):
+        
+        # now extracting the nodes from the open_set.
+        for (m, weight) in get_neighbors(n):
             if m not in open_set and m not in closed_set:
                 open_set.add(m)
                 parents[m] = n
                 g[m] = g[n] + weight
             else:
-                if g[m] > g[n] + weight:
+                if g[n] + weight < g[m]:
                     g[m] = g[n] + weight
                     parents[m] = n
                     if m in closed_set:
@@ -66,7 +70,7 @@ def a_star(start_node, stop_node):
 
         open_set.remove(n)
         closed_set.add(n)
-
+    
     print("Path doesn't exists.")
     return None
 
