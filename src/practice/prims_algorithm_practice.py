@@ -1,10 +1,10 @@
 graph_nodes = {
-    'A': [('B', 2), ('C', 1)],
-    'B': [('A', 2), ('C', 2), ('D', 5), ('E', 10)],
-    'C': [('A', 1), ('B', 2), ('E', 9)],
-    'D': [('B', 5), ('F', 8)],
-    'E': [('B', 10), ('C', 9)],
-    'F': [('D', 8), ('E', 5)]
+    'A': [('B', 4), ('C', 5)],
+    'B': [('A', 4), ('C', 11), ('D', 9)],
+    'C': [('A', 5), ('B', 11), ('E', 3)],
+    'D': [('B', 9), ('E', 7), ('F', 2)],
+    'E': [('C', 3), ('D', 7), ('F', 6)],
+    'F': [('D', 2), ('E', 6)]
 }
 
 visited = {
@@ -17,8 +17,9 @@ visited = {
 }
 
 class Pair:
-    def __init__(self, node, cost):
-        self.node = node
+    def __init__(self, parent, node, cost):
+        self.node = node     
+        self.parent = parent   
         self.cost = cost
 
 
@@ -33,17 +34,22 @@ def selection_sort(list):
 
 
 def prims_algorithm():
-    mst_node_list = [Pair('A', 0)]
+    mst_node_list = [Pair(None, 'A', 0)]
+    tree_list = []
     final_cost = 0
     while len(mst_node_list) > 0:
         curr = mst_node_list.pop(0)
         if visited[curr.node] == False:
             visited[curr.node] = True
             final_cost += curr.cost
+            tree_list.append(curr)
             for (node, cost) in graph_nodes.get(curr.node):
-                mst_node_list.append(Pair(node, cost))
+                if visited[node] == False:
+                    mst_node_list.append(Pair(curr.node, node, cost))
             selection_sort(mst_node_list)
     
+    for edge in tree_list:
+        print(edge.parent, '--', edge.cost, '--', edge.node)
     print("The minimum cost of MST is:", final_cost)
 
 
