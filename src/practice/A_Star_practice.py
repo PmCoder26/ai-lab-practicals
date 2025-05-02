@@ -54,7 +54,7 @@ def a_star(start, end):
             print('The required path is:', path)
             return path
         
-        # now extracting the nodes from the open_set.
+        # now extracting the neighbouring nodes.
         for (m, weight) in get_neighbors(n):
             if m not in open_set and m not in closed_set:
                 open_set.add(m)
